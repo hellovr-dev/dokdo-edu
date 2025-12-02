@@ -1,4 +1,5 @@
 "use client";
+/// <reference path="../types/model-viewer.d.ts" />
 
 import Link from "next/link";
 import { Rock } from "@/types/rock";
