@@ -16,6 +16,7 @@ export default function RockCard({ rock }: { rock: Rock }) {
     >
       <div className="relative aspect-square bg-zinc-200 dark:bg-zinc-700">
         {rock.model_url ? (
+          // @ts-expect-error model-viewer is a web component
           <model-viewer
             src={rock.model_url}
             auto-rotate
@@ -38,19 +39,4 @@ export default function RockCard({ rock }: { rock: Rock }) {
       </div>
     </Link>
   );
-}
-
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "model-viewer": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
-          src?: string;
-          "auto-rotate"?: boolean;
-          "camera-controls"?: boolean;
-        },
-        HTMLElement
-      >;
-    }
-  }
 }
