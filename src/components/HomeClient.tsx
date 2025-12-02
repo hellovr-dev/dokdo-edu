@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Rock } from "@/types/rock";
+import "@/types/model-viewer";
 
 export default function HomeClient({ rocks }: { rocks: Rock[] }) {
   const router = useRouter();
