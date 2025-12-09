@@ -94,7 +94,6 @@ export default function RockDetailClient({
               allowFullScreen
             />
           ) : (
-            // @ts-expect-error model-viewer is a web component
             <model-viewer
               src={rock.model_url || ""}
               auto-rotate
@@ -112,7 +111,6 @@ export default function RockDetailClient({
                   <span className="text-xl text-gray-500">3D 모델 준비중</span>
                 </div>
               )}
-            {/* @ts-expect-error model-viewer is a web component */}
             </model-viewer>
           )}
         </div>

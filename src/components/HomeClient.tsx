@@ -46,7 +46,6 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
       {/* 왼쪽: 3D 모델 뷰어 (70%) */}
       <div className="relative flex-1 lg:w-[70%]">
         <div className="h-full w-full bg-gradient-to-b from-sky-200 to-sky-300">
-          {/* @ts-expect-error model-viewer is a web component */}
           <model-viewer
             src="https://ilsurrxsjrmcgxsiwgcu.supabase.co/storage/v1/object/public/Dockdo_edu_web_contects/dokdo_test_v1.glb"
             auto-rotate
@@ -62,7 +61,6 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 rounded-full bg-white/80 px-6 py-2 text-lg font-bold text-sky-700">
               독도 3D 탐험
             </div>
-          {/* @ts-expect-error model-viewer is a web component */}
           </model-viewer>
         </div>
 
