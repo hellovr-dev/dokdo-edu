@@ -210,7 +210,7 @@ export default function RockDetailClient({
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
-                    {r.name}
+                    {r.display_order}. {r.name}
                   </button>
                 ))}
                 {dongdoRocks.length === 0 && (
@@ -238,7 +238,7 @@ export default function RockDetailClient({
                         : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
-                    {r.name}
+                    {r.display_order}. {r.name}
                   </button>
                 ))}
                 {seodoRocks.length === 0 && (

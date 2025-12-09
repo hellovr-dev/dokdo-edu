@@ -123,7 +123,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
                     }}
                     className="w-full rounded-lg bg-gray-200 px-4 py-3 text-left text-base font-medium text-gray-700 transition-colors hover:bg-gray-300"
                   >
-                    {rock.name}
+                    {rock.display_order}. {rock.name}
                   </button>
                 ))}
                 {dongdoRocks.length === 0 && (
@@ -147,7 +147,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
                     }}
                     className="w-full rounded-lg bg-gray-200 px-4 py-3 text-left text-base font-medium text-gray-700 transition-colors hover:bg-gray-300"
                   >
-                    {rock.name}
+                    {rock.display_order}. {rock.name}
                   </button>
                 ))}
                 {seodoRocks.length === 0 && (

@@ -9,5 +9,7 @@ export interface Rock {
   audio_url: string
   island: "동도" | "서도"
   order_index: number
+  display_order: number
+  is_active: boolean
   created_at: string
 }

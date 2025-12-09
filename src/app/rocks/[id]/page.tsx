@@ -22,7 +22,8 @@ async function getAllRocks(): Promise<Rock[]> {
   const { data, error } = await supabase
     .from("rocks")
     .select("*")
-    .order("order_index", { ascending: true });
+    .eq("is_active", true)
+    .order("display_order", { ascending: true });
 
   if (error) {
     console.error("Error fetching rocks:", error);
