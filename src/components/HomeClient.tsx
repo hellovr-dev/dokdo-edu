@@ -44,10 +44,47 @@ const getHotspotPosition = (displayOrder: number) => {
 export default function HomeClient({ rocks }: { rocks: Rock[] }) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [devMode, setDevMode] = useState(false);
 
   useEffect(() => {
     import("@google/model-viewer");
   }, []);
+
+  // 개발자 도구: 3D 모델 클릭 시 좌표 출력
+  useEffect(() => {
+    if (!devMode) return;
+
+    const viewer = document.querySelector("model-viewer") as any;
+    if (!viewer) return;
+
+    const handleClick = async (event: MouseEvent) => {
+      const rect = viewer.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const hit = viewer.positionAndNormalFromPoint(x, y);
+      if (hit) {
+        const position = `${hit.position.x.toFixed(2)}m ${hit.position.y.toFixed(2)}m ${hit.position.z.toFixed(2)}m`;
+        const normal = `${hit.normal.x.toFixed(2)}m ${hit.normal.y.toFixed(2)}m ${hit.normal.z.toFixed(2)}m`;
+
+        console.log("=== Hotspot 좌표 ===");
+        console.log(`data-position="${position}"`);
+        console.log(`data-normal="${normal}"`);
+        console.log("복사용:", `"${position}",`);
+
+        // 클립보드에 복사
+        try {
+          await navigator.clipboard.writeText(position);
+          console.log("좌표가 클립보드에 복사되었습니다!");
+        } catch {
+          console.log("클립보드 복사 실패");
+        }
+      }
+    };
+
+    viewer.addEventListener("click", handleClick);
+    return () => viewer.removeEventListener("click", handleClick);
+  }, [devMode]);
 
 
   const handleZoomIn = () => {
@@ -139,11 +176,27 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
       >
         <div className="flex h-full flex-col">
           {/* 설정 버튼 */}
-          <div className="flex justify-end p-4">
+          <div className="flex justify-between p-4">
+            <button
+              onClick={() => setDevMode(!devMode)}
+              className={`flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors ${
+                devMode
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+              }`}
+            >
+              {devMode ? "DEV ON" : "DEV"}
+            </button>
             <button className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-xl transition-colors hover:bg-gray-300">
               ⚙️
             </button>
           </div>
+          {devMode && (
+            <div className="mx-4 mb-4 rounded-lg bg-yellow-100 p-3 text-sm text-yellow-800">
+              <p className="font-bold">개발자 모드</p>
+              <p>3D 모델을 클릭하면 해당 위치의 좌표가 콘솔에 출력되고 클립보드에 복사됩니다.</p>
+            </div>
+          )}
 
           {/* 바위 목록 */}
           <div className="flex-1 overflow-y-auto px-4 pb-4">
