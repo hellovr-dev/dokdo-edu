@@ -4,15 +4,41 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Rock } from "@/types/rock";
 
-// 임시 핫스팟 좌표 (3D 모델 주변에 균등 배치)
-// 나중에 실제 독도 3D 모델 좌표로 수정 필요
-const getHotspotPosition = (index: number, total: number) => {
-  const angle = (index / total) * Math.PI * 2;
-  const radius = 2;
-  const x = Math.cos(angle) * radius;
-  const z = Math.sin(angle) * radius;
-  const y = 0.5 + (index % 3) * 0.3; // 높이 변화
-  return `${x}m ${y}m ${z}m`;
+// 독도 바위 위치 좌표 (display_order 기준)
+// 서도(왼쪽 섬): x가 음수, 동도(오른쪽 섬): x가 양수
+// y: 높이, z: 남북 방향 (양수: 북쪽, 음수: 남쪽)
+const rockPositions: { [key: number]: string } = {
+  // 서도 (왼쪽 섬)
+  1: "-2.5m 0.8m 2.0m",    // 큰가제바위: 북쪽 맨 끝
+  2: "-2.0m 0.7m 1.8m",    // 작은가제바위: 북쪽 (1번 오른쪽)
+  3: "-3.0m 0.6m 0.5m",    // 지네바위: 서쪽 중간
+  4: "-2.8m 0.5m -1.2m",   // 넙덕바위: 남서쪽
+  5: "-3.2m 0.6m -0.5m",   // 군함바위: 서쪽 중하단
+  6: "-2.0m 0.9m 1.0m",    // 김바위: 중앙 상단
+  7: "-2.2m 0.4m -2.0m",   // 보찰바위: 남쪽 맨 끝
+  8: "-2.0m 0.6m 0.0m",    // 삼형제굴바위: 중앙
+  20: "-2.3m 1.2m 1.5m",   // 탕건봉: 북쪽 상단
+  21: "-2.0m 0.5m 0.3m",   // 물골: 중앙
+  22: "-2.3m 0.5m -1.5m",  // 코끼리바위: 남쪽
+  23: "-3.0m 0.7m 0.0m",   // 상장군바위: 서쪽 중간
+
+  // 동도 (오른쪽 섬)
+  9: "2.0m 0.9m 0.8m",     // 닭바위: 중앙 상단
+  10: "2.5m 0.5m -1.2m",   // 춧발바위: 남동쪽
+  11: "2.0m 0.7m 0.0m",    // 촛대바위: 중앙
+  12: "1.8m 0.6m 0.2m",    // 미역바위: 중앙
+  13: "2.5m 0.6m 1.5m",    // 물오리바위: 북동쪽
+  14: "1.5m 0.4m -1.5m",   // 숫돌바위: 남쪽 선착장 옆
+  15: "2.0m 0.5m -1.0m",   // 부채바위: 남쪽
+  16: "3.0m 0.6m 0.0m",    // 얼굴바위: 동쪽
+  17: "3.0m 0.7m 0.5m",    // 독립문바위: 동쪽
+  18: "2.0m 0.5m 0.5m",    // 천장굴: 중앙
+  19: "2.8m 0.6m 1.2m",    // 한반도바위: 북동쪽
+  24: "1.8m 0.4m -1.8m",   // 해녀바위: 남쪽
+};
+
+const getHotspotPosition = (displayOrder: number) => {
+  return rockPositions[displayOrder] || "0m 0.5m 0m";
 };
 
 export default function HomeClient({ rocks }: { rocks: Rock[] }) {
@@ -68,12 +94,12 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
             style={{ width: "100%", height: "100%" }}
           >
             {/* 핫스팟 핀 마커 */}
-            {rocks.map((rock, index) => (
+            {rocks.map((rock) => (
               <button
                 key={rock.id}
                 className="hotspot-pin"
                 slot={`hotspot-${rock.id}`}
-                data-position={getHotspotPosition(index, rocks.length)}
+                data-position={getHotspotPosition(rock.display_order)}
                 data-normal="0m 1m 0m"
                 onClick={() => router.push(`/rocks/${rock.id}`)}
               >
