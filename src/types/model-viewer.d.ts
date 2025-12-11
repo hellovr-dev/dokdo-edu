@@ -12,7 +12,9 @@ declare module 'react' {
           exposure?: string;
           'shadow-intensity'?: string;
           'tone-mapping'?: string;
+          'environment-image'?: string;
           ar?: boolean;
+          'ar-modes'?: string;
           style?: React.CSSProperties;
         },
         HTMLElement

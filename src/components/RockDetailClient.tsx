@@ -20,8 +20,6 @@ export default function RockDetailClient({
     import("@google/model-viewer");
   }, []);
 
-  const dongdoRocks = allRocks.filter((r) => r.island === "동도");
-  const seodoRocks = allRocks.filter((r) => r.island === "서도");
 
   const handleZoomIn = () => {
     const viewer = document.querySelector("model-viewer") as any;
@@ -189,60 +187,26 @@ export default function RockDetailClient({
 
           {/* 바위 목록 */}
           <div className="flex-1 overflow-y-auto px-4 pb-4">
-            {/* 동도 섹션 */}
-            <div className="mb-4">
-              <div className="mb-3 rounded-lg bg-gray-400 py-3 text-center text-lg font-bold text-white">
-                동도
-              </div>
-              <div className="space-y-2">
-                {dongdoRocks.map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => {
-                      router.push(`/rocks/${r.id}`);
-                      setSidebarOpen(false);
-                    }}
-                    className={`w-full rounded-lg px-4 py-3 text-left text-base font-medium transition-colors ${
-                      r.id === rock.id
-                        ? "bg-pink-400 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    {r.display_order}. {r.name}
-                  </button>
-                ))}
-                {dongdoRocks.length === 0 && (
-                  <p className="py-2 text-center text-gray-400">바위 없음</p>
-                )}
-              </div>
-            </div>
-
-            {/* 서도 섹션 */}
-            <div>
-              <div className="mb-3 rounded-lg bg-gray-400 py-3 text-center text-lg font-bold text-white">
-                서도
-              </div>
-              <div className="space-y-2">
-                {seodoRocks.map((r) => (
-                  <button
-                    key={r.id}
-                    onClick={() => {
-                      router.push(`/rocks/${r.id}`);
-                      setSidebarOpen(false);
-                    }}
-                    className={`w-full rounded-lg px-4 py-3 text-left text-base font-medium transition-colors ${
-                      r.id === rock.id
-                        ? "bg-pink-400 text-white"
-                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-                    }`}
-                  >
-                    {r.display_order}. {r.name}
-                  </button>
-                ))}
-                {seodoRocks.length === 0 && (
-                  <p className="py-2 text-center text-gray-400">바위 없음</p>
-                )}
-              </div>
+            <div className="space-y-2">
+              {allRocks.map((r) => (
+                <button
+                  key={r.id}
+                  onClick={() => {
+                    router.push(`/rocks/${r.id}`);
+                    setSidebarOpen(false);
+                  }}
+                  className={`w-full rounded-lg px-4 py-3 text-left text-base font-medium transition-colors ${
+                    r.id === rock.id
+                      ? "bg-pink-400 text-white"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  }`}
+                >
+                  {r.display_order}. {r.name}
+                </button>
+              ))}
+              {allRocks.length === 0 && (
+                <p className="py-2 text-center text-gray-400">바위 없음</p>
+              )}
             </div>
           </div>
         </div>
