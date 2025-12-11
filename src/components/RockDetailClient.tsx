@@ -113,7 +113,7 @@ export default function RockDetailClient({
           )}
         </div>
 
-        {/* 확대/축소/영상/AR 버튼 */}
+        {/* 확대/축소/영상 버튼 */}
         <div className="absolute right-4 top-1/2 flex -translate-y-1/2 flex-col gap-3">
           <button
             onClick={handleZoomIn}
@@ -137,15 +137,6 @@ export default function RockDetailClient({
               {showVideo ? "3D" : "▶"}
             </button>
           )}
-          <button
-            onClick={() => {
-              const viewer = document.querySelector("model-viewer") as any;
-              if (viewer?.activateAR) viewer.activateAR();
-            }}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
-          >
-            AR
-          </button>
         </div>
 
         {/* 하단 설명란 */}
