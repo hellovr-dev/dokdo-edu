@@ -144,6 +144,8 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
             shadow-intensity="1"
             environment-image="neutral"
             tone-mapping="neutral"
+            min-camera-orbit="auto 30deg auto"
+            max-camera-orbit="auto 90deg auto"
             style={{ width: "100%", height: "100%" }}
           >
             {/* 핫스팟 핀 마커 */}
