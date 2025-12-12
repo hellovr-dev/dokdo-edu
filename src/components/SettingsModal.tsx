@@ -64,9 +64,9 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           </div>
         </div>
 
-        {/* 설명 듣기(TTS) 설정 */}
+        {/* 자동 설명 듣기(TTS) 설정 */}
         <div className="mb-8">
-          <h3 className="mb-3 text-xl font-bold text-gray-800">설명 듣기</h3>
+          <h3 className="mb-3 text-xl font-bold text-gray-800">자동 설명 듣기</h3>
           <div className="flex gap-3">
             <button
               onClick={() => updateSettings({ ttsEnabled: true })}
