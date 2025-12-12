@@ -221,8 +221,14 @@ export default function RockDetailClient({
         }`}
       >
         <div className="flex h-full flex-col">
-          {/* 설정 버튼 */}
-          <div className="flex justify-end p-4">
+          {/* 홈, 설정 버튼 */}
+          <div className="flex justify-end gap-2 p-4">
+            <button
+              onClick={() => router.push("/")}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
+            >
+              🏠
+            </button>
             <button
               onClick={() => setSettingsOpen(true)}
               className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
