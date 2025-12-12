@@ -127,16 +127,8 @@ export default function RockDetailClient({
 
       {/* 왼쪽: 3D 모델 뷰어 또는 유튜브 영상 */}
       <div className="relative flex-1 lg:w-[70%]">
-        {/* 뒤로가기 버튼 */}
-        <button
-          onClick={() => router.push("/")}
-          className="absolute left-4 top-4 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110"
-        >
-          ←
-        </button>
-
         <div className="h-full w-full bg-gradient-to-b from-sky-200 to-sky-300">
-          {showVideo && rock.youtube_url ? (
+          {showVideo && rock.youtube_url && rock.youtube_url.trim() !== "" ? (
             <iframe
               src={getYoutubeEmbedUrl(rock.youtube_url)}
               className="h-full w-full"
@@ -179,7 +171,7 @@ export default function RockDetailClient({
           >
             −
           </button>
-          {rock.youtube_url && (
+          {rock.youtube_url && rock.youtube_url.trim() !== "" && (
             <button
               onClick={() => setShowVideo(!showVideo)}
               className={`flex h-14 w-14 items-center justify-center rounded-full text-xl text-white shadow-lg transition-transform hover:scale-110 ${
