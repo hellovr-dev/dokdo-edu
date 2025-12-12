@@ -3,9 +3,11 @@
 import { useEffect, useRef } from "react";
 import { useSettings } from "@/contexts/SettingsContext";
 
-// BGM 파일 URL (나중에 실제 파일로 교체)
-// null이면 BGM 기능 비활성화
-const BGM_URL: string | null = null;
+// BGM 파일 URL
+// BGM: "Acoustic Breeze" by Benjamin Tissot
+// Royalty Free Music: https://www.bensound.com
+// License code: 4ELQ7DJRZMMKOQQN
+const BGM_URL: string | null = "https://ilsurrxsjrmcgxsiwgcu.supabase.co/storage/v1/object/public/Dockdo_edu_web_contects/acousticbreeze.mp3";
 
 export default function BGMPlayer() {
   const { settings } = useSettings();

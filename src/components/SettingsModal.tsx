@@ -91,6 +91,23 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           </div>
         </div>
 
+        {/* BGM 출처 */}
+        <div className="mb-6 rounded-lg bg-white/50 p-3 text-xs text-gray-600">
+          <p className="font-medium text-gray-700">BGM 출처</p>
+          <p>&quot;Acoustic Breeze&quot; by Benjamin Tissot</p>
+          <p>
+            Royalty Free Music:{" "}
+            <a
+              href="https://www.bensound.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-sky-600 underline"
+            >
+              bensound.com
+            </a>
+          </p>
+        </div>
+
         {/* 하단 링크 */}
         <div className="flex justify-between text-sm text-gray-600">
           <a
