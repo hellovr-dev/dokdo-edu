@@ -22,7 +22,7 @@ export default function BGMPlayer() {
     if (!audioRef.current) {
       audioRef.current = new Audio(BGM_URL);
       audioRef.current.loop = true;
-      audioRef.current.volume = 0.5;
+      audioRef.current.volume = 0.15;
     }
 
     const audio = audioRef.current;
