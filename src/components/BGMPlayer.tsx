@@ -4,7 +4,8 @@ import { useEffect, useRef } from "react";
 import { useSettings } from "@/contexts/SettingsContext";
 
 // BGM 파일 URL (나중에 실제 파일로 교체)
-const BGM_URL = "";
+// null이면 BGM 기능 비활성화
+const BGM_URL: string | null = null;
 
 export default function BGMPlayer() {
   const { settings } = useSettings();
@@ -12,7 +13,7 @@ export default function BGMPlayer() {
 
   useEffect(() => {
     // BGM URL이 없으면 아무것도 하지 않음
-    if (!BGM_URL || BGM_URL.trim() === "") {
+    if (!BGM_URL) {
       return;
     }
 
