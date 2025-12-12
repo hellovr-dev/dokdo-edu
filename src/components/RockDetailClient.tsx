@@ -25,18 +25,30 @@ export default function RockDetailClient({
     import("@google/model-viewer");
   }, []);
 
+  // TTS 재생 함수 (중복 재생 방지)
+  const speakDescription = () => {
+    // 이미 재생 중이면 무시
+    if (window.speechSynthesis.speaking) {
+      return;
+    }
+
+    window.speechSynthesis.cancel(); // 혹시 모를 이전 재생 정리
+    const utterance = new SpeechSynthesisUtterance(
+      `${rock.name}. ${rock.description}`
+    );
+    utterance.lang = "ko-KR";
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
+
   // 자동 TTS: 페이지 진입 후 2초 이내 자동 읽기 (설정에서 켜져 있을 때만)
   useEffect(() => {
     if (settings.ttsEnabled && !hasAutoSpoken.current) {
       hasAutoSpoken.current = true;
       const timer = setTimeout(() => {
-        const utterance = new SpeechSynthesisUtterance(
-          `${rock.name}. ${rock.description}`
-        );
-        utterance.lang = "ko-KR";
-        utterance.onstart = () => setIsSpeaking(true);
-        utterance.onend = () => setIsSpeaking(false);
-        window.speechSynthesis.speak(utterance);
+        speakDescription();
       }, 2000);
       return () => clearTimeout(timer);
     }
@@ -61,20 +73,17 @@ export default function RockDetailClient({
     }
   };
 
+  // 스피커 버튼 클릭 핸들러 (설정과 관계없이 항상 동작, 중복 재생 방지)
   const handleSpeak = () => {
-    if (isSpeaking) {
+    // 재생 중이면 정지
+    if (isSpeaking || window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
       setIsSpeaking(false);
       return;
     }
 
-    const utterance = new SpeechSynthesisUtterance(
-      `${rock.name}. ${rock.description}`
-    );
-    utterance.lang = "ko-KR";
-    utterance.onend = () => setIsSpeaking(false);
-    window.speechSynthesis.speak(utterance);
-    setIsSpeaking(true);
+    // 새로 재생
+    speakDescription();
   };
 
   const getYoutubeEmbedUrl = (url: string) => {
