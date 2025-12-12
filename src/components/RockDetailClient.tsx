@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Rock } from "@/types/rock";
 import { useSettings } from "@/contexts/SettingsContext";
 import SettingsModal from "./SettingsModal";
+import { useSFX } from "@/hooks/useSFX";
 
 export default function RockDetailClient({
   rock,
@@ -20,6 +21,7 @@ export default function RockDetailClient({
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const hasAutoSpoken = useRef(false);
+  const { playButtonSFX } = useSFX();
 
   useEffect(() => {
     import("@google/model-viewer");
@@ -124,19 +126,19 @@ export default function RockDetailClient({
         }`}
       >
         <button
-          onClick={() => router.push("/")}
+          onClick={() => { playButtonSFX(); router.push("/"); }}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
         >
           🏠
         </button>
         <button
-          onClick={() => setSettingsOpen(true)}
+          onClick={() => { playButtonSFX(); setSettingsOpen(true); }}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
         >
           ⚙️
         </button>
         <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => { playButtonSFX(); setSidebarOpen(!sidebarOpen); }}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
         >
           {sidebarOpen ? "✕" : "☰"}
@@ -178,20 +180,20 @@ export default function RockDetailClient({
         {/* 확대/축소/영상 버튼 */}
         <div className="absolute right-4 top-1/2 flex -translate-y-1/2 flex-col gap-3">
           <button
-            onClick={handleZoomIn}
+            onClick={() => { playButtonSFX(); handleZoomIn(); }}
             className="flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110"
           >
             +
           </button>
           <button
-            onClick={handleZoomOut}
+            onClick={() => { playButtonSFX(); handleZoomOut(); }}
             className="flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110"
           >
             −
           </button>
           {rock.youtube_url && rock.youtube_url.trim() !== "" && (
             <button
-              onClick={() => setShowVideo(!showVideo)}
+              onClick={() => { playButtonSFX(); setShowVideo(!showVideo); }}
               className={`flex h-14 w-14 items-center justify-center rounded-full text-xl text-white shadow-lg transition-transform hover:scale-110 ${
                 showVideo ? "bg-pink-600" : "bg-pink-400"
               }`}
@@ -213,7 +215,7 @@ export default function RockDetailClient({
               </p>
             </div>
             <button
-              onClick={handleSpeak}
+              onClick={() => { playButtonSFX(); handleSpeak(); }}
               className={`ml-4 flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full text-2xl text-white shadow-lg transition-transform hover:scale-110 ${
                 isSpeaking ? "bg-pink-600" : "bg-pink-400"
               }`}
@@ -234,13 +236,13 @@ export default function RockDetailClient({
           {/* 홈, 설정 버튼 (PC에서만 표시) */}
           <div className="hidden justify-end gap-2 p-4 lg:flex">
             <button
-              onClick={() => router.push("/")}
+              onClick={() => { playButtonSFX(); router.push("/"); }}
               className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
             >
               🏠
             </button>
             <button
-              onClick={() => setSettingsOpen(true)}
+              onClick={() => { playButtonSFX(); setSettingsOpen(true); }}
               className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
             >
               ⚙️
@@ -256,6 +258,7 @@ export default function RockDetailClient({
                 <button
                   key={r.id}
                   onClick={() => {
+                    playButtonSFX();
                     router.push(`/rocks/${r.id}`);
                     setSidebarOpen(false);
                   }}

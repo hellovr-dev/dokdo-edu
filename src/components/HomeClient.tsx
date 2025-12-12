@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Rock } from "@/types/rock";
 import SettingsModal from "./SettingsModal";
+import { useSFX } from "@/hooks/useSFX";
 
 // 독도 바위 위치 좌표 (display_order 기준)
 // 서도(왼쪽 섬): x가 음수, 동도(오른쪽 섬): x가 양수
@@ -47,6 +48,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [devMode, setDevMode] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const { playButtonSFX } = useSFX();
 
   useEffect(() => {
     import("@google/model-viewer");
@@ -116,13 +118,13 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
         }`}
       >
         <button
-          onClick={() => setSettingsOpen(true)}
+          onClick={() => { playButtonSFX(); setSettingsOpen(true); }}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
         >
           ⚙️
         </button>
         <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
+          onClick={() => { playButtonSFX(); setSidebarOpen(!sidebarOpen); }}
           className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
         >
           {sidebarOpen ? "✕" : "☰"}
@@ -152,7 +154,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
                 slot={`hotspot-${rock.id}`}
                 data-position={getHotspotPosition(rock.display_order)}
                 data-normal="0m 1m 0m"
-                onClick={() => router.push(`/rocks/${rock.id}`)}
+                onClick={() => { playButtonSFX(); router.push(`/rocks/${rock.id}`); }}
               >
                 <div className="pin-marker">
                   <span className="pin-number">{rock.display_order}</span>
@@ -168,13 +170,13 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
         {/* 확대/축소 버튼 */}
         <div className="absolute right-4 top-1/2 flex -translate-y-1/2 flex-col gap-3">
           <button
-            onClick={handleZoomIn}
+            onClick={() => { playButtonSFX(); handleZoomIn(); }}
             className="flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110"
           >
             +
           </button>
           <button
-            onClick={handleZoomOut}
+            onClick={() => { playButtonSFX(); handleZoomOut(); }}
             className="flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110"
           >
             −
@@ -192,7 +194,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
           {/* 설정 버튼 (PC에서만 표시) */}
           <div className="hidden justify-between p-4 lg:flex">
             <button
-              onClick={() => setDevMode(!devMode)}
+              onClick={() => { playButtonSFX(); setDevMode(!devMode); }}
               className={`flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors ${
                 devMode
                   ? "bg-green-500 text-white"
@@ -202,7 +204,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
               {devMode ? "DEV ON" : "DEV"}
             </button>
             <button
-              onClick={() => setSettingsOpen(true)}
+              onClick={() => { playButtonSFX(); setSettingsOpen(true); }}
               className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
             >
               ⚙️
@@ -224,6 +226,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
                 <button
                   key={rock.id}
                   onClick={() => {
+                    playButtonSFX();
                     router.push(`/rocks/${rock.id}`);
                     setSidebarOpen(false);
                   }}

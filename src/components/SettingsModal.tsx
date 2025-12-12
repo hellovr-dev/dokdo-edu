@@ -1,6 +1,7 @@
 "use client";
 
 import { useSettings } from "@/contexts/SettingsContext";
+import { useSFX } from "@/hooks/useSFX";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface SettingsModalProps {
 
 export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const { settings, updateSettings } = useSettings();
+  const { playButtonSFX } = useSFX();
 
   if (!isOpen) return null;
 
@@ -24,7 +26,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       <div className="relative mx-4 w-full max-w-md rounded-3xl border-4 border-orange-400 bg-[#FFEEBA] p-6 shadow-2xl">
         {/* 닫기 버튼 */}
         <button
-          onClick={onClose}
+          onClick={() => { playButtonSFX(); onClose(); }}
           className="absolute right-4 top-4 flex h-12 w-12 items-center justify-center rounded-lg bg-red-400 text-2xl font-bold text-white shadow-md transition-transform hover:scale-105"
         >
           X
@@ -42,7 +44,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           <h3 className="mb-3 text-xl font-bold text-gray-800">배경음</h3>
           <div className="flex gap-3">
             <button
-              onClick={() => updateSettings({ bgmEnabled: true })}
+              onClick={() => { playButtonSFX(); updateSettings({ bgmEnabled: true }); }}
               className={`flex-1 rounded-lg py-3 text-lg font-medium transition-colors ${
                 settings.bgmEnabled
                   ? "bg-sky-200 text-sky-800"
@@ -52,7 +54,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               켜기
             </button>
             <button
-              onClick={() => updateSettings({ bgmEnabled: false })}
+              onClick={() => { playButtonSFX(); updateSettings({ bgmEnabled: false }); }}
               className={`flex-1 rounded-lg py-3 text-lg font-medium transition-colors ${
                 !settings.bgmEnabled
                   ? "bg-sky-200 text-sky-800"
@@ -69,7 +71,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           <h3 className="mb-3 text-xl font-bold text-gray-800">자동 설명 듣기</h3>
           <div className="flex gap-3">
             <button
-              onClick={() => updateSettings({ ttsEnabled: true })}
+              onClick={() => { playButtonSFX(); updateSettings({ ttsEnabled: true }); }}
               className={`flex-1 rounded-lg py-3 text-lg font-medium transition-colors ${
                 settings.ttsEnabled
                   ? "bg-sky-200 text-sky-800"
@@ -79,7 +81,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               켜기
             </button>
             <button
-              onClick={() => updateSettings({ ttsEnabled: false })}
+              onClick={() => { playButtonSFX(); updateSettings({ ttsEnabled: false }); }}
               className={`flex-1 rounded-lg py-3 text-lg font-medium transition-colors ${
                 !settings.ttsEnabled
                   ? "bg-sky-200 text-sky-800"
@@ -91,21 +93,43 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           </div>
         </div>
 
-        {/* BGM 출처 */}
+        {/* 출처 */}
         <div className="mb-6 rounded-lg bg-white/50 p-3 text-xs text-gray-600">
-          <p className="font-medium text-gray-700">BGM 출처</p>
-          <p>&quot;Acoustic Breeze&quot; by Benjamin Tissot</p>
-          <p>
-            Royalty Free Music:{" "}
-            <a
-              href="https://www.bensound.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sky-600 underline"
-            >
-              bensound.com
-            </a>
-          </p>
+          <p className="mb-2 font-medium text-gray-700">음원 출처</p>
+          <div className="mb-2">
+            <p className="font-medium">BGM</p>
+            <p>곡명: &quot;Acoustic Breeze&quot;</p>
+            <p>아티스트: Benjamin Tissot</p>
+            <p>
+              출처:{" "}
+              <a
+                href="https://www.bensound.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sky-600 underline"
+              >
+                bensound.com
+              </a>
+            </p>
+            <p>라이선스 코드: 4ELQ7DJRZMMKOQQN</p>
+          </div>
+          <div>
+            <p className="font-medium">SFX (효과음)</p>
+            <p>파일명: UI Pop Up</p>
+            <p>제작자: Marevnik</p>
+            <p>
+              출처:{" "}
+              <a
+                href="https://freesound.org/s/708605/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sky-600 underline"
+              >
+                freesound.org
+              </a>
+            </p>
+            <p>라이선스: Attribution 4.0</p>
+          </div>
         </div>
 
         {/* 하단 링크 */}
