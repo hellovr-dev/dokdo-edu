@@ -28,6 +28,8 @@ export default function BGMPlayer() {
     const audio = audioRef.current;
 
     if (settings.bgmEnabled) {
+      // 새로고침 시 처음부터 재생
+      audio.currentTime = 0;
       // 사용자 인터랙션 후에만 재생 가능하므로 catch로 에러 처리
       audio.play().catch(() => {
         // 자동 재생 실패 시 무시 (브라우저 정책)
