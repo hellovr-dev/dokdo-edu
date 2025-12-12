@@ -45,14 +45,35 @@ export default function RockDetailClient({
 
   // 자동 TTS: 페이지 진입 후 2초 이내 자동 읽기 (설정에서 켜져 있을 때만)
   useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+
     if (settings.ttsEnabled && !hasAutoSpoken.current) {
       hasAutoSpoken.current = true;
-      const timer = setTimeout(() => {
+      timer = setTimeout(() => {
         speakDescription();
       }, 2000);
-      return () => clearTimeout(timer);
     }
+
+    // 페이지 이탈 시 TTS 중단
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    };
   }, [settings.ttsEnabled, rock.name, rock.description]);
+
+  // 브라우저 새로고침/닫기 시에도 TTS 중단
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      window.speechSynthesis.cancel();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.speechSynthesis.cancel();
+    };
+  }, []);
 
 
   const handleZoomIn = () => {
