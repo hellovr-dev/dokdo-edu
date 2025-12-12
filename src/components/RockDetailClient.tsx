@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Rock } from "@/types/rock";
+import { useSettings } from "@/contexts/SettingsContext";
+import SettingsModal from "./SettingsModal";
 
 export default function RockDetailClient({
   rock,
@@ -12,13 +14,33 @@ export default function RockDetailClient({
   allRocks: Rock[];
 }) {
   const router = useRouter();
+  const { settings } = useSettings();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [showVideo, setShowVideo] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const hasAutoSpoken = useRef(false);
 
   useEffect(() => {
     import("@google/model-viewer");
   }, []);
+
+  // 자동 TTS: 페이지 진입 후 2초 이내 자동 읽기 (설정에서 켜져 있을 때만)
+  useEffect(() => {
+    if (settings.ttsEnabled && !hasAutoSpoken.current) {
+      hasAutoSpoken.current = true;
+      const timer = setTimeout(() => {
+        const utterance = new SpeechSynthesisUtterance(
+          `${rock.name}. ${rock.description}`
+        );
+        utterance.lang = "ko-KR";
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+        window.speechSynthesis.speak(utterance);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [settings.ttsEnabled, rock.name, rock.description]);
 
 
   const handleZoomIn = () => {
@@ -171,7 +193,10 @@ export default function RockDetailClient({
         <div className="flex h-full flex-col">
           {/* 설정 버튼 */}
           <div className="flex justify-end p-4">
-            <button className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-xl transition-colors hover:bg-gray-300">
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
+            >
               ⚙️
             </button>
           </div>
@@ -210,6 +235,9 @@ export default function RockDetailClient({
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* 설정 모달 */}
+      <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }

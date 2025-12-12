@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Rock } from "@/types/rock";
+import SettingsModal from "./SettingsModal";
 
 // 독도 바위 위치 좌표 (display_order 기준)
 // 서도(왼쪽 섬): x가 음수, 동도(오른쪽 섬): x가 양수
@@ -45,6 +46,7 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [devMode, setDevMode] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
 
   useEffect(() => {
     import("@google/model-viewer");
@@ -187,7 +189,10 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
             >
               {devMode ? "DEV ON" : "DEV"}
             </button>
-            <button className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-200 text-xl transition-colors hover:bg-gray-300">
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
+            >
               ⚙️
             </button>
           </div>
@@ -228,6 +233,9 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
           onClick={() => setSidebarOpen(false)}
         />
       )}
+
+      {/* 설정 모달 */}
+      <SettingsModal isOpen={settingsOpen} onClose={() => setSettingsOpen(false)} />
     </div>
   );
 }
