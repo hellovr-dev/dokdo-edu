@@ -109,13 +109,25 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-sky-100">
-      {/* 모바일 메뉴 버튼 */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed left-4 top-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110 lg:hidden"
+      {/* 모바일 상단 버튼들 (홈 → 설정 → 메뉴) */}
+      <div
+        className={`fixed top-4 z-50 flex gap-2 transition-all duration-300 lg:hidden ${
+          sidebarOpen ? "right-[21rem]" : "right-4"
+        }`}
       >
-        {sidebarOpen ? "✕" : "☰"}
-      </button>
+        <button
+          onClick={() => setSettingsOpen(true)}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
+        >
+          ⚙️
+        </button>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
+        >
+          {sidebarOpen ? "✕" : "☰"}
+        </button>
+      </div>
 
       {/* 왼쪽: 3D 모델 뷰어 (70%) */}
       <div className="relative flex-1 lg:w-[70%]">
@@ -177,8 +189,8 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
         }`}
       >
         <div className="flex h-full flex-col">
-          {/* 설정 버튼 */}
-          <div className="flex justify-between p-4">
+          {/* 설정 버튼 (PC에서만 표시) */}
+          <div className="hidden justify-between p-4 lg:flex">
             <button
               onClick={() => setDevMode(!devMode)}
               className={`flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors ${
@@ -196,6 +208,8 @@ export default function HomeClient({ rocks }: { rocks: Rock[] }) {
               ⚙️
             </button>
           </div>
+          {/* 모바일에서 상단 여백 */}
+          <div className="h-4 lg:hidden" />
           {devMode && (
             <div className="mx-4 mb-4 rounded-lg bg-yellow-100 p-3 text-sm text-yellow-800">
               <p className="font-bold">개발자 모드</p>

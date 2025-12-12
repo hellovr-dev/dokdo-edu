@@ -117,13 +117,31 @@ export default function RockDetailClient({
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-sky-100">
-      {/* 모바일 메뉴 버튼 */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="fixed right-4 top-4 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-pink-400 text-2xl text-white shadow-lg transition-transform hover:scale-110 lg:hidden"
+      {/* 모바일 상단 버튼들 (홈 → 설정 → 메뉴) */}
+      <div
+        className={`fixed top-4 z-50 flex gap-2 transition-all duration-300 lg:hidden ${
+          sidebarOpen ? "right-[21rem]" : "right-4"
+        }`}
       >
-        {sidebarOpen ? "✕" : "☰"}
-      </button>
+        <button
+          onClick={() => router.push("/")}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
+        >
+          🏠
+        </button>
+        <button
+          onClick={() => setSettingsOpen(true)}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
+        >
+          ⚙️
+        </button>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white shadow-lg transition-transform hover:scale-110"
+        >
+          {sidebarOpen ? "✕" : "☰"}
+        </button>
+      </div>
 
       {/* 왼쪽: 3D 모델 뷰어 또는 유튜브 영상 */}
       <div className="relative flex-1 lg:w-[70%]">
@@ -213,8 +231,8 @@ export default function RockDetailClient({
         }`}
       >
         <div className="flex h-full flex-col">
-          {/* 홈, 설정 버튼 */}
-          <div className="flex justify-end gap-2 p-4">
+          {/* 홈, 설정 버튼 (PC에서만 표시) */}
+          <div className="hidden justify-end gap-2 p-4 lg:flex">
             <button
               onClick={() => router.push("/")}
               className="flex h-12 w-12 items-center justify-center rounded-full bg-orange-400 text-xl text-white transition-colors hover:bg-orange-500"
@@ -228,6 +246,8 @@ export default function RockDetailClient({
               ⚙️
             </button>
           </div>
+          {/* 모바일에서 상단 여백 */}
+          <div className="h-4 lg:hidden" />
 
           {/* 바위 목록 */}
           <div className="flex-1 overflow-y-auto px-4 pb-4">
